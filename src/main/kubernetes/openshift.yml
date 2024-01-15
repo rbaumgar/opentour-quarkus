@@ -54,6 +54,9 @@ spec:
       containers:
         - image: quay.io/rbaumgar/opentour-image:2.0
           imagePullPolicy: Always
+          env:
+            - name: stage
+              value: dev
           name: opentour-quarkus
           ports:
             - containerPort: 8080
