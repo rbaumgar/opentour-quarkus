@@ -54,14 +54,14 @@ spec:
       containers:
         - image: quay.io/rbaumgar/opentour-image:2.0
           imagePullPolicy: Always
-          env:
-            - name: stage
-              value: dev
           name: opentour-quarkus
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
+          env:
+            - name: STAGE
+              value: demo              
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
