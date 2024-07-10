@@ -43,9 +43,65 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 ./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./target/opentour-quarkus-1.0.0-SNAPSHOT-runner`
+You can then execute your native executable with `./target/opentour-quarkus-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+
+## Deploy with GitOps
+
+### Development
+
+```
+project: default
+source:
+  repoURL: 'https://github.com/rbaumgar/opentour-quarkus'
+  path: src/main/kubernetes/dev
+  targetRevision: master
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: opentour-dev
+```
+
+```bash
+cat <<EOF | oc create -f -
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: quarkus-dev
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: opentour-dev
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: src/main/kubernetes/dev
+    repoURL: 'https://github.com/rbaumgar/opentour-quarkus'
+    targetRevision: master
+EOF
+```
+
+### Production
+
+```bash
+cat <<EOF | od apply -f -
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: quarkus-prod
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: quarkus-prod
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: src/main/kubernetes/prod
+    repoURL: 'https://github.com/rbaumgar/opentour-quarkus'
+    targetRevision: master
+EOF
+```
+
 
 ## Related Guides
 
