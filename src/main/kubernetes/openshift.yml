@@ -52,7 +52,7 @@ spec:
         app.kubernetes.io/version: 1.0.0-SNAPSHOT
     spec:
       containers:
-        - image: quay.io/rbaumgar/opentour-image:2.0
+        - image: quay.io/rbaumgar/opentour-image:3.0
           imagePullPolicy: Always
           name: opentour-quarkus
           ports:
