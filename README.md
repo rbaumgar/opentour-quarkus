@@ -92,7 +92,7 @@ metadata:
   namespace: openshift-gitops
 spec:
   destination:
-    namespace: quarkus-prod
+    namespace: opentour-prod
     server: 'https://kubernetes.default.svc'
   project: default
   source:
@@ -102,6 +102,16 @@ spec:
 EOF
 ```
 
+```bash
+$ oc create ns opentour-prod
+namespace/opentour-prod created
+$ oc label ns opentour-prod argocd.argoproj.io/managed-by=openshift-gitops
+namespace/opentour-prod labeled
+$ oc create ns opentour-dev
+namespace/opentour-dev created
+$ oc label ns opentour-dev argocd.argoproj.io/managed-by=openshift-gitops
+namespace/opentour-dev labeled
+```
 
 ## Related Guides
 
